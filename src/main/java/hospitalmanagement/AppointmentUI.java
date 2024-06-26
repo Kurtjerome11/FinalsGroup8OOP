@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 public class AppointmentUI {
      private JFrame frame, f1 = new JFrame("Group8 OOP");
-    private JTextField tName, tAge, tGender, tDate, tTime, tContact, tEmail, tAddress, tPreferredPhysician, tReason;
+    private JTextField tName, tAge, tGender, tDate, tLast, tContact, tEmail, tAddress, tPreferredPhysician, tReason;
     private AppointmentTable appointmentClass;
 
     public AppointmentUI() {
@@ -20,7 +20,7 @@ public class AppointmentUI {
 
         // Labels
         JLabel l1, l4, l3, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l2, limg;
-        l1 = new JLabel("BOOK AN APPOINTMENT");
+        l1 = new JLabel("PATIENTS INFORMATION");
         l1.setBounds(380, 0, 1000, 100);
         l1.setFont(new Font("Cambria", Font.BOLD, 35));
         l1.setForeground(Color.WHITE);
@@ -36,53 +36,53 @@ public class AppointmentUI {
         l3.setForeground(Color.WHITE);
         l3.setHorizontalAlignment(SwingConstants.CENTER);
 
-        l5 = new JLabel("Name:");
-        l5.setBounds(40, 180, 100, 25);
+        l5 = new JLabel("First Name:");
+        l5.setBounds(80, 180, 100, 25);
         l5.setFont(new Font("Aptos", Font.PLAIN, 15));
         l5.setForeground(Color.WHITE);
 
         l6 = new JLabel("Age:");
-        l6.setBounds(40, 220, 100, 25);
+        l6.setBounds(120, 220, 100, 25);
         l6.setFont(new Font("Aptos", Font.PLAIN, 15));
         l6.setForeground(Color.WHITE);
 
         l7 = new JLabel("Gender:");
-        l7.setBounds(40, 260, 100, 25);
+        l7.setBounds(100, 260, 100, 25);
         l7.setFont(new Font("Aptos", Font.PLAIN, 15));
         l7.setForeground(Color.WHITE);
 
-        l8 = new JLabel("Date:");
-        l8.setBounds(40, 300, 100, 25);
+        l8 = new JLabel("Date of Birth:");
+        l8.setBounds(70, 300, 100, 25);
         l8.setFont(new Font("Aptos", Font.PLAIN, 15));
         l8.setForeground(Color.WHITE);
 
-        l9 = new JLabel("Time:");
-        l9.setBounds(400, 180, 100, 25);
+        l9 = new JLabel("Last Name:");
+        l9.setBounds(510, 180, 100, 25);
         l9.setFont(new Font("Aptos", Font.PLAIN, 15));
         l9.setForeground(Color.WHITE);
 
         l10 = new JLabel("Address:");
-        l10.setBounds(40, 340, 100, 25);
+        l10.setBounds(100, 340, 100, 25);
         l10.setFont(new Font("Aptos", Font.PLAIN, 15));
         l10.setForeground(Color.WHITE);
 
         l11 = new JLabel("Email:");
-        l11.setBounds(40, 380, 100, 25);
+        l11.setBounds(120, 380, 100, 25);
         l11.setFont(new Font("Aptos", Font.PLAIN, 15));
         l11.setForeground(Color.WHITE);
 
         l12 = new JLabel("Contact No:");
-        l12.setBounds(400, 220, 100, 25);
+        l12.setBounds(510, 220, 100, 25);
         l12.setFont(new Font("Aptos", Font.PLAIN, 15));
         l12.setForeground(Color.WHITE);
 
         l13 = new JLabel("Preferred Physician:");
-        l13.setBounds(400, 260, 150, 25);
+        l13.setBounds(455, 260, 150, 25);
         l13.setFont(new Font("Aptos", Font.PLAIN, 15));
         l13.setForeground(Color.WHITE);
 
         l14 = new JLabel("Reason for Appointment:");
-        l14.setBounds(370, 300, 180, 25);
+        l14.setBounds(430, 300, 180, 25);
         l14.setFont(new Font("Aptos", Font.PLAIN, 15));
         l14.setForeground(Color.WHITE);
 
@@ -106,38 +106,38 @@ public class AppointmentUI {
         p1.add(limg);
 
         tName = new JTextField();
-        tName.setBounds(140, 180, 150, 25);
+        tName.setBounds(170, 180, 200, 25);
 
         tAge = new JTextField();
-        tAge.setBounds(140, 220, 150, 25);
+        tAge.setBounds(170, 220, 200, 25);
 
         tGender = new JTextField();
-        tGender.setBounds(140, 260, 150, 25);
+        tGender.setBounds(170, 260, 200, 25);
 
         tDate = new JTextField();
-        tDate.setBounds(140, 300, 150, 25);
+        tDate.setBounds(170, 300, 200, 25);
 
-        tTime = new JTextField();
-        tTime.setBounds(550, 180, 400, 25);
+        tLast = new JTextField();
+        tLast.setBounds(620, 180, 400, 25);
 
         tContact = new JTextField();
-        tContact.setBounds(550, 220, 400, 25);
+        tContact.setBounds(620, 220, 400, 25);
 
         tAddress = new JTextField();
-        tAddress.setBounds(140, 340, 150, 25);
+        tAddress.setBounds(170, 340, 200, 25);
 
         tEmail = new JTextField();
-        tEmail.setBounds(140, 380, 150, 25);
+        tEmail.setBounds(170, 380, 200, 25);
 
         tPreferredPhysician = new JTextField();
-        tPreferredPhysician.setBounds(550, 260, 400, 25);
+        tPreferredPhysician.setBounds(620, 260, 400, 25);
 
         tReason = new JTextField();
-        tReason.setBounds(550, 300, 400, 200);
+        tReason.setBounds(620, 300, 400, 150);
 
       
-        JButton b1 = new JButton("Save Appointment");
-        b1.setBounds(70, 500, 150, 40);
+        JButton b1 = new JButton("SAVE");
+        b1.setBounds(500, 530, 200, 60);
         b1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -145,7 +145,7 @@ public class AppointmentUI {
                 String age = tAge.getText();
                 String gender = tGender.getText();
                 String date = tDate.getText();
-                String time = tTime.getText();
+                String time = tLast.getText();
                 String contact = tContact.getText();
                 String address = tAddress.getText();
                 String email = tEmail.getText();
@@ -185,7 +185,7 @@ public class AppointmentUI {
         frame.add(tAge);
         frame.add(tGender);
         frame.add(tDate);
-        frame.add(tTime);
+        frame.add(tLast);
         frame.add(tContact);
         frame.add(tEmail);
         frame.add(tAddress);
@@ -204,7 +204,7 @@ public class AppointmentUI {
         tAge.setText("");
         tGender.setText("");
         tDate.setText("");
-        tTime.setText("");
+        tLast.setText("");
         tContact.setText("");
         tAddress.setText("");
         tEmail.setText("");
