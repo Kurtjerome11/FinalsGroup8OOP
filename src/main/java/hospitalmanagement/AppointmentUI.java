@@ -5,19 +5,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 public class AppointmentUI {
-    private JFrame f1 = new JFrame("Group8 OOP");
-    private JLabel l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, limg;
-    private JPanel p1;
-    private JButton b1, b2, b3;
+     private JFrame frame, f1 = new JFrame("Group8 OOP");
     private JTextField tName, tAge, tGender, tDate, tTime, tContact, tEmail, tAddress, tPreferredPhysician, tReason;
+    private AppointmentTable appointmentClass;
 
-    AppointmentUI() {
+    public AppointmentUI() {
         // Frame settings
-        f1.setSize(1200, 700);
-        f1.getContentPane().setBackground(Color.decode("#1f67ba"));
+        frame = new JFrame("Hospital Management System");
+        frame.setSize(1200, 700);
+        frame.getContentPane().setBackground(Color.decode("#1f67ba"));
+        frame.setLayout(null);
 
-        // Label settings
+        // Labels
+        JLabel l1, l4, l3, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l2, limg;
         l1 = new JLabel("BOOK AN APPOINTMENT");
         l1.setBounds(380, 0, 1000, 100);
         l1.setFont(new Font("Cambria", Font.BOLD, 35));
@@ -49,7 +51,7 @@ public class AppointmentUI {
         l7.setFont(new Font("Aptos", Font.PLAIN, 15));
         l7.setForeground(Color.WHITE);
 
-        l8 = new JLabel("Date: ");
+        l8 = new JLabel("Date:");
         l8.setBounds(40, 300, 100, 25);
         l8.setFont(new Font("Aptos", Font.PLAIN, 15));
         l8.setForeground(Color.WHITE);
@@ -87,23 +89,22 @@ public class AppointmentUI {
         l2 = new JLabel();
         l2.setBounds(110, 20, 1000, 100);
 
-        // Load image
+       
         ImageIcon i1 = new ImageIcon("Images/hospi.png");
         Image i2 = i1.getImage().getScaledInstance(1300, 700, Image.SCALE_SMOOTH);
         ImageIcon i3 = new ImageIcon(i2);
 
-        // Label for the pic
+       
         limg = new JLabel(i3);
 
-        // Panel for image on the UI and its settings
-        p1 = new JPanel();
+      
+        JPanel p1 = new JPanel();
         p1.setBounds(-150, 90, 1500, 700);
         p1.setBackground(Color.BLACK);
 
-        // Add the label to the panel
+     
         p1.add(limg);
 
-        // TextFields and their settings
         tName = new JTextField();
         tName.setBounds(140, 180, 150, 25);
 
@@ -134,57 +135,86 @@ public class AppointmentUI {
         tReason = new JTextField();
         tReason.setBounds(550, 300, 400, 200);
 
-        // Buttons and their settings
-        b1 = new JButton("Save Appointment");
+      
+        JButton b1 = new JButton("Save Appointment");
         b1.setBounds(70, 500, 150, 40);
-        
-        b2 = new JButton("Back");
-        b2.setBounds(1060, 600, 80, 30);
-        b2.addActionListener(new ActionListener() {
+        b1.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
-                f1.dispose();
-                new MainUi();
+                String name = tName.getText();
+                String age = tAge.getText();
+                String gender = tGender.getText();
+                String date = tDate.getText();
+                String time = tTime.getText();
+                String contact = tContact.getText();
+                String address = tAddress.getText();
+                String email = tEmail.getText();
+                String physician = tPreferredPhysician.getText();
+                String reason = tReason.getText();
+
+              
+                if (appointmentClass == null) {
+                    appointmentClass = new AppointmentTable();
+                }
+
+           
+                appointmentClass.addAppointment(name, gender, age, date, time, contact, address, email, physician, reason);
+                appointmentClass.setVisible(true);
+
+              
+                clearFields();
             }
         });
+
+        frame.add(l1);
+        frame.add(l4);
+        frame.add(l3);
+        frame.add(l5);
+        frame.add(l6);
+        frame.add(l7);
+        frame.add(l8);
+        frame.add(l9);
+        frame.add(l10);
+        frame.add(l11);
+        frame.add(l12);
+        frame.add(l13);
+        frame.add(l14);
+        frame.add(b1);
+        frame.add(p1);
+        frame.add(tName);
+        frame.add(tAge);
+        frame.add(tGender);
+        frame.add(tDate);
+        frame.add(tTime);
+        frame.add(tContact);
+        frame.add(tEmail);
+        frame.add(tAddress);
+        frame.add(tPreferredPhysician);
+        frame.add(tReason);
+        frame.add(l2);
+
+      
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private void clearFields() {
+        tName.setText("");
+        tAge.setText("");
+        tGender.setText("");
+        tDate.setText("");
+        tTime.setText("");
+        tContact.setText("");
+        tAddress.setText("");
+        tEmail.setText("");
+        tPreferredPhysician.setText("");
+        tReason.setText("");
         
-        b3 = new JButton("Pending Appointments");
-        b3.setBounds(270, 500, 180, 40);
-
-
-        f1.add(l1);
-        f1.add(l4);
-        f1.add(l3);
-        f1.add(l5);
-        f1.add(l6);
-        f1.add(l7);
-        f1.add(l8);
-        f1.add(l9);
-        f1.add(l10);
-        f1.add(l11);
-        f1.add(l12);
-        f1.add(l13);
-        f1.add(l14);
-        f1.add(b1);
-        f1.add(b2);
-        f1.add(b3);
-        f1.add(p1);
-        f1.add(tName);
-        f1.add(tAge);
-        f1.add(tGender);
-        f1.add(tDate);
-        f1.add(tTime);
-        f1.add(tContact);
-        f1.add(tEmail);
-        f1.add(tAddress);
-        f1.add(tPreferredPhysician);
-        f1.add(tReason);
-        f1.add(l2);
-
-        // Frame settings 2.0
-        f1.setVisible(true);
-        f1.setLocationRelativeTo(null);
-        f1.setLayout(null);
-        f1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+           public void actionPerformed(ActionEvent e) {
+                f1.dispose();
+                new MainUi();
     }
 
 }
