@@ -24,11 +24,9 @@ public class AppointmentTable extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-      
         Color lightBlue = new Color(173, 216, 230); 
         getContentPane().setBackground(lightBlue);
 
-      
         nameField = new JTextField(20);
         ageField = new JTextField(20);
         genderField = new JTextField(20);
@@ -41,13 +39,11 @@ public class AppointmentTable extends JFrame {
         JButton deleteButton = new JButton("DELETE");
         JButton updateButton = new JButton("UPDATE");
 
-      
         tableModel = new DefaultTableModel(
                 new String[]{"Name", "Age", "Gender", "Date", "Time", "ContactNumber", "Physician", "Reason"}, 0);
         table = new JTable(tableModel);
         JScrollPane tableScrollPane = new JScrollPane(table);
 
-        // Add action listeners
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -69,7 +65,6 @@ public class AppointmentTable extends JFrame {
             }
         });
 
-      
         JPanel inputPanel = new JPanel(new GridLayout(9, 2, 5, 5));
         inputPanel.add(new JLabel("Name"));
         inputPanel.add(nameField);
@@ -88,13 +83,11 @@ public class AppointmentTable extends JFrame {
         inputPanel.add(new JLabel("Reason"));
         inputPanel.add(reasonField);
 
-       
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(addButton);
         buttonPanel.add(deleteButton);
         buttonPanel.add(updateButton);
 
-        // Add components to frame
         setLayout(new BorderLayout());
         add(inputPanel, BorderLayout.NORTH);
         add(tableScrollPane, BorderLayout.CENTER);
@@ -151,16 +144,7 @@ public class AppointmentTable extends JFrame {
         reasonField.setText("");
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new AppointmentTable().setVisible(true);
-            }
-        });
-    }
-
     void addAppointment(String name, String gender, String age, String date, String time, String contact, String address, String email, String physician, String reason) {
-       // Method implementation
+       // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
