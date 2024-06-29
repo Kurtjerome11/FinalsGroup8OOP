@@ -120,6 +120,7 @@ public class ExpensesUI{
         // Buttons settings
         bntback = new JButton("Back");
         bntback.setBounds(1060, 600, 80, 30);
+        bntback.setFocusPainted(false);
         bntback.addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent e) 
@@ -136,7 +137,7 @@ public class ExpensesUI{
         bntadd.setFont(new Font("Bookman Old Style", Font.BOLD, 14));
         bntadd.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         bntadd.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        //bntadd.setFocusPainted(false);
+        bntadd.setFocusPainted(false);
         bntadd.addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent e) 
@@ -152,7 +153,7 @@ public class ExpensesUI{
         bntrmve.setFont(new Font("Bookman Old Style", Font.BOLD, 14));
         bntrmve.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         bntrmve.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        //bntrmve.setFocusPainted(false);
+        bntrmve.setFocusPainted(false);
         bntrmve.addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent e) {
