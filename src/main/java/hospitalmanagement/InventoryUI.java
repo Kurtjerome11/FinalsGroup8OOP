@@ -280,6 +280,7 @@ private void updateItem() {
         item.setRowFilter(RowFilter.regexFilter("(?i)"+tsear.getText()));
         
             }
+            
        
         private void clearFields() {
         tadd1.setText("");
