@@ -118,66 +118,79 @@ public class ReportUI{
         String[] Columns = {"Patient ID", "Room no", "Clinical Outcome", "Diagnosis", "Admit Date", "Discharge Date", "Doctor", "Procedures Performed", "Itemized Charges", "Total Charges"};
         tlreport = new DefaultTableModel(Columns, 0);
         treport = new JTable(tlreport);
-        treport.setBounds(72, 360, 1100, 200);
+        treport.setBounds(67, 360, 1110, 200);
         
         
         //Customizes column size
         TableColumn id = treport.getColumnModel().getColumn(0);
         id.setPreferredWidth(20);
         
-
         TableColumn room = treport.getColumnModel().getColumn(1);
         room.setPreferredWidth(20);
 
-        TableColumn outcome = treport.getColumnModel().getColumn(3);
-        outcome.setPreferredWidth(50);
-
+        TableColumn outcome = treport.getColumnModel().getColumn(2);
+        outcome.setPreferredWidth(55);
+        
+        TableColumn diagnosis = treport.getColumnModel().getColumn(3);
+        diagnosis.setPreferredWidth(40);
+        
+        TableColumn admitDate = treport.getColumnModel().getColumn(4);
+        admitDate.setPreferredWidth(50);
+        
+        TableColumn dischargeDate = treport.getColumnModel().getColumn(5);
+        dischargeDate.setPreferredWidth(50);
+        
+        TableColumn doctor = treport.getColumnModel().getColumn(6);
+        doctor.setPreferredWidth(50);
+        
+        TableColumn procedure = treport.getColumnModel().getColumn(7);
+        procedure.setPreferredWidth(80);
+        
+        TableColumn ItemCharges = treport.getColumnModel().getColumn(8);
+        ItemCharges.setPreferredWidth(60);
+        
+        TableColumn TotalCharges = treport.getColumnModel().getColumn(9);
+        TotalCharges.setPreferredWidth(60);
+      
+        //ScrollPane settings
         stable = new JScrollPane(treport);
-        stable.setBounds(72, 360, 1100, 200);
+        stable.setBounds(67, 360, 1110, 200);
        
-        //textfield settings
+        
+        //Textfields settings
         tID = new JTextField();
         tID.setBounds(37, 130, 200, 25);
         
-        
         tRBnumber = new JTextField();
-        tRBnumber.setBounds(37, 195, 200, 25);
-        
+        tRBnumber.setBounds(37, 195, 200, 25);      
         
         tCLIOutcome = new JTextField();
-        tCLIOutcome.setBounds(37, 260, 200, 25);
-        
+        tCLIOutcome.setBounds(37, 260, 200, 25);       
         
         tDiagnose = new JTextField();
-        tDiagnose.setBounds(280, 130, 200, 25);
-       
+        tDiagnose.setBounds(280, 130, 200, 25);       
         
         tAdmitDate = new JTextField();
-        tAdmitDate.setBounds(280, 195, 200, 25);
-        
+        tAdmitDate.setBounds(280, 195, 200, 25);       
         
         tDischargeDate = new JTextField();
-        tDischargeDate.setBounds(280, 260, 200, 25);
-        
+        tDischargeDate.setBounds(280, 260, 200, 25);        
         
         tDocName = new JTextField();
-        tDocName.setBounds(523, 130, 200, 25);
-        
+        tDocName.setBounds(523, 130, 200, 25);       
         
         tProcedure = new JTextField();
         tProcedure.setBounds(523, 195, 200, 25);
-        
-        
+     
         
         //TextArea Settings
         tItem = new JTextArea();
-        tItem.setBounds(766, 130, 200, 100);
-        
+        tItem.setBounds(766, 130, 200, 100);   
         
         tTotal = new JTextArea();
         tTotal.setBounds(1009, 130, 200, 100);
-    
-                
+        
+        
         //button that goes back to the dashboard
         b1 = new JButton("Back");
         b1.setBounds(1060, 620, 80, 30);
@@ -285,7 +298,7 @@ public class ReportUI{
             }
                 tlreport.addRow(new Object[]{ id, room, outcome, diagnosis, admitDate, dischargeDate, doctor, procedure, ItemCharges, TotalCharges});
                 
-                
+                //Clears input fields before adding data
                 tID.setText("");
                 tRBnumber.setText("");
                 tAdmitDate.setText("");
