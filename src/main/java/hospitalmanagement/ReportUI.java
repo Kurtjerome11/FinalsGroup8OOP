@@ -256,8 +256,7 @@ public class ReportUI{
         f1.add(tProcedure);
         f1.add(tItem);
         f1.add(tTotal);       
-        f1.add(p1);
-        
+        f1.add(p1);     
         f1.add(l2);
         
         // Frame settings 2.0
