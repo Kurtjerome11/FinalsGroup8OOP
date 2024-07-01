@@ -18,7 +18,7 @@ public class AppointmentUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
       
-        JLabel background = new JLabel(new ImageIcon("C:\\Users\\angge\\Downloads\\hospi.png"));
+        JLabel background = new JLabel(new ImageIcon("C:Images/hospi.png"));
         background.setBounds(0, 0, 1300, 800); 
         background.setLayout(null);
 
