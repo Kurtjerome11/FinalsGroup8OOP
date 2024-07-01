@@ -56,8 +56,8 @@ Connection con = null;
         // Label settings
         l1 = new JLabel("Inventory");
         l1.setBounds(40, 0, 600, 100);
-        l1.setFont(new Font("cooper black",Font.PLAIN,50));
-        l1.setForeground(Color.black);
+        l1.setFont(new Font("Arial Black",Font.PLAIN,50));
+        l1.setForeground(Color.white);
         f1.add(l1);
         
 //Table
@@ -187,7 +187,7 @@ Connection con = null;
         });
 
 bsear = new JButton("Search");
-        bsear.setBounds(530, 550, 130, 60);
+        bsear.setBounds(960, 40, 110, 40);
         bsear.setFont(new Font("Arial",Font.PLAIN,12));
         bsear.setForeground(Color.black);
         f1.add(bsear);
@@ -200,7 +200,7 @@ bsear = new JButton("Search");
       
 //--------------------------BACKGROUND-IMAGE------------------------------------
         //code for load image
-        ImageIcon i1 = new ImageIcon("Images/inventoryui.png");
+        ImageIcon i1 = new ImageIcon("Images/inventoryui.jpg");
         Image i2 = i1.getImage().getScaledInstance(1200, 700, Image.SCALE_SMOOTH);
         ImageIcon i3 = new ImageIcon(i2);      
         //label for the pic
@@ -216,9 +216,12 @@ bsear = new JButton("Search");
         //button that goes back to the dashboard
         b1 = new JButton("Back");
         b1.setBounds(1000, 550, 130, 60);
+        b1.setFont(new Font("Arial",Font.PLAIN,12));
+        b1.setForeground(Color.black);
                 f1.add(b1);
         b1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                new MainUi();
                 f1.dispose();
                
             }
