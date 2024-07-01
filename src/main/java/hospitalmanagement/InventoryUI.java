@@ -53,6 +53,7 @@ Connection con = null;
         f1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
+        
         // Label settings
         l1 = new JLabel("Inventory");
         l1.setBounds(40, 0, 600, 100);
