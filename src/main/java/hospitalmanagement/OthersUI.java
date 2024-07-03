@@ -250,9 +250,6 @@ public class OthersUI{
         f1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-        public static void main(String[] args) {
-        new OthersUI(); 
-    }
 }
 
 
