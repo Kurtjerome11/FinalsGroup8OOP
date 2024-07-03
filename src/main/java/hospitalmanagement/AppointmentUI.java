@@ -5,6 +5,10 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class AppointmentUI extends JFrame {
     private JTextField tName, tAge, tGender, tDateofBirth, tLast, tContact, tEmail, tAddress, tDate, tTime, tReason;
@@ -24,11 +28,11 @@ public class AppointmentUI extends JFrame {
 
       
         JLabel l1 = new JLabel("BOOK AN APPOINTMENT");
-        l1.setBounds((getWidth() - 400) / 2, 20, 400, 35);
+        l1.setBounds(500, 20, 400, 35);
         l1.setFont(new Font("Cambria", Font.BOLD, 25));
         l1.setForeground(Color.WHITE);
 
-        JLabel l5 = new JLabel("First Name:");
+        JLabel l5 = new JLabel("Patient ID:");
         l5.setBounds(50, 80, 100, 25);
         l5.setFont(new Font("Arial", Font.PLAIN, 15));
         l5.setForeground(Color.WHITE);
@@ -48,7 +52,7 @@ public class AppointmentUI extends JFrame {
         l8.setFont(new Font("Arial", Font.PLAIN, 15));
         l8.setForeground(Color.WHITE);
 
-        JLabel l9 = new JLabel("Last Name:");
+        JLabel l9 = new JLabel("Name:");
         l9.setBounds(450, 80, 100, 25);
         l9.setFont(new Font("Arial", Font.PLAIN, 15));
         l9.setForeground(Color.WHITE);
@@ -115,7 +119,7 @@ public class AppointmentUI extends JFrame {
         tTime.setBounds(950, 120, 200, 25);
 
         tReason = new JTextField();
-        tReason.setBounds(950, 160, 200, 25);
+        tReason.setBounds(950, 160, 200, 80);
 
         // Buttons
         JButton b1 = new JButton("ADD");
@@ -124,6 +128,33 @@ public class AppointmentUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addAppointment();
+                String name = tName.getText();
+                String lastName = tLast.getText();
+                String gender = tGender.getText();
+                String dateofBirth = tDateofBirth.getText();
+                String age = tAge.getText();
+                String address = tAddress.getText();
+                String email = tEmail.getText();
+                String contact = tContact.getText();
+                String date = tDate.getText();
+                String time = tTime.getText();
+                String reason = tReason.getText();
+                
+                
+                try {
+                    try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/oophospital", "root", "Kurtjerome11")) {
+                        String query = "INSERT INTO appointment (name1, lname, gender ,dateofb,age,add1,ema,cont,date1,time1,reason) Values('" + name + "','" + lastName + "','" + gender + "','" +
+                                dateofBirth + "','" + age + "','" + address + "','"+email+"','"+contact+"','"+date+"','"+time+"','"+reason+"')";
+                        
+                        Statement sta = connection.createStatement();
+                        int x = sta.executeUpdate(query);
+                    }
+
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+                
+                clearFields();
             }
         });
 
@@ -136,7 +167,7 @@ public class AppointmentUI extends JFrame {
             }
         });
 
-        JButton bUpdate = new JButton("EDIT");
+        JButton bUpdate = new JButton("UPDATE");
         bUpdate.setBounds(690, 250, 100, 30);
         bUpdate.addActionListener(new ActionListener() {
             @Override
@@ -158,12 +189,47 @@ public class AppointmentUI extends JFrame {
 
      
         tableModel = new DefaultTableModel(
-                new String[]{"First Name", "Last Name", "Gender", "Date of Birth", "Age", "Contact No", "Address", "Email", "Date", "Time", "Reason"}, 0);
-        table = new JTable(tableModel);
-        table.setBackground(new Color(173, 216, 230)); 
+                new String[]{"Patient ID", "Name", "Gender", "Date of Birth", "Age", "Contact No", "Address", "Email", "Date", "Time", "Reason"}, 0);
+        table = new JTable(tableModel); 
         table.setGridColor(Color.GRAY); 
         JScrollPane tableScrollPane = new JScrollPane(table);
         tableScrollPane.setBounds(50, 320, 1200, 260); 
+        
+        try {
+                    try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/oophospital", "root", "Kurtjerome11")) {
+                        String query = "select * from appointment" ;
+                        
+                        Statement sta = connection.createStatement();
+                        ResultSet rs = sta.executeQuery(query);
+                        
+                        while(rs.next()){
+                            
+                            
+                            String name = rs.getString("name1");
+                            String lastName = rs.getString("lname");
+                            String gender = rs.getString("gender");
+                            String dateofBirth = rs.getString("dateofb");
+                            String age = rs.getString("age");
+                            String address = rs.getString("add1");
+                            String email = rs.getString("ema");
+                            String contact = rs.getString("cont");
+                            String date = rs.getString("date1");
+                            String time = rs.getString("time1");
+                            String reason = rs.getString("reason");
+                            
+                            String tbData[] = {name,lastName,gender,dateofBirth,age,address,email,contact,date,time,reason};
+                            tableModel.addRow(tbData);
+                            
+                        }
+                    }
+
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+        
+        
+        
+        
 
 
         background.add(l1);
@@ -214,38 +280,131 @@ public class AppointmentUI extends JFrame {
         String time = tTime.getText();
         String reason = tReason.getText();
 
-        tableModel.addRow(new Object[]{name, lastName, gender, dateofBirth, age, contact, address, email, date, time, reason});
-        clearFields();
+        tableModel.addRow(new Object[]{name, lastName, gender, dateofBirth, age, address, email, contact, date, time, reason});
     }
 
  
     private void deleteAppointment() {
         int selectedRow = table.getSelectedRow();
-        if (selectedRow >= 0) {
-            tableModel.removeRow(selectedRow);
-        } else {
-            JOptionPane.showMessageDialog(this, "Please select a row to delete.");
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a appointment to delete", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String name = (String) tableModel.getValueAt(selectedRow, 0);
+
+        try {
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/oophospital", "root", "Kurtjerome11")) {
+                String query = "DELETE FROM appointment WHERE name1='" + name + "'";
+                Statement sta = connection.createStatement();
+                int x = sta.executeUpdate(query);
+
+                if (x == 1) {
+                    tableModel.removeRow(selectedRow);
+                    JOptionPane.showMessageDialog(this, "Appointment deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error deleting Appointment", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
    
     private void updateAppointment() {
         int selectedRow = table.getSelectedRow();
-        if (selectedRow >= 0) {
-            tableModel.setValueAt(tName.getText(), selectedRow, 0);
-            tableModel.setValueAt(tLast.getText(), selectedRow, 1);
-            tableModel.setValueAt(tGender.getText(), selectedRow, 2);
-            tableModel.setValueAt(tDateofBirth.getText(), selectedRow, 3);
-            tableModel.setValueAt(tAge.getText(), selectedRow, 4);
-            tableModel.setValueAt(tContact.getText(), selectedRow, 5);
-            tableModel.setValueAt(tAddress.getText(), selectedRow, 6);
-            tableModel.setValueAt(tEmail.getText(), selectedRow, 7);
-            tableModel.setValueAt(tDate.getText(), selectedRow, 8);
-            tableModel.setValueAt(tTime.getText(), selectedRow, 9);
-            tableModel.setValueAt(tReason.getText(), selectedRow, 10);
-            clearFields();
-        } else {
-            JOptionPane.showMessageDialog(this, "Please select a row to update.");
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select appointment to edit", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String name = tName.getText();
+        String lastName = tLast.getText();
+        String gender = tGender.getText();
+        String dateofBirth = tDateofBirth.getText();
+        String age = tAge.getText();
+        String address = tAddress.getText();
+        String email = tEmail.getText();
+        String contact = tContact.getText();
+        String date = tDate.getText();
+        String time = tTime.getText();
+        String reason = tReason.getText();
+
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/oophospital", "root", "Kurtjerome11");
+            Statement sta = connection.createStatement();
+            int x = 0;
+
+            if (!lastName.isEmpty()) {
+                String query = "UPDATE appointment SET lname='" + lastName + "' WHERE name1='" + name + "'";
+                x += sta.executeUpdate(query);
+                tableModel.setValueAt(lastName, selectedRow, 1);
+            }
+
+            if (!gender.isEmpty()) {
+                String query = "UPDATE appointment SET gender='" + gender + "' WHERE name1='" + name + "'";
+                x += sta.executeUpdate(query);
+                tableModel.setValueAt(gender, selectedRow, 2);
+            }
+
+            if (!dateofBirth.isEmpty()) {
+                String query = "UPDATE appointment SET dateofb='" + dateofBirth + "' WHERE name1='" + name + "'";
+                x += sta.executeUpdate(query);
+                tableModel.setValueAt(dateofBirth, selectedRow, 3);
+            }
+
+            if (!age.isEmpty()) {
+                String query = "UPDATE appointment SET age='" + age + "' WHERE name1='" + name + "'";
+                x += sta.executeUpdate(query);
+                tableModel.setValueAt(age, selectedRow, 4);
+            }
+
+            if (!address.isEmpty()) {
+                String query = "UPDATE appointment SET add1='" + address + "' WHERE name1='" + name + "'";
+                x += sta.executeUpdate(query);
+                tableModel.setValueAt(address, selectedRow, 5);
+            }
+            
+            if (!email.isEmpty()) {
+                String query = "UPDATE appointment SET ema='" + email + "' WHERE name1='" + name + "'";
+                x += sta.executeUpdate(query);
+                tableModel.setValueAt(email, selectedRow, 6);
+            }
+            
+            if (!contact.isEmpty()) {
+                String query = "UPDATE appointment SET cont='" + contact + "' WHERE name1='" + name + "'";
+                x += sta.executeUpdate(query);
+                tableModel.setValueAt(contact, selectedRow,7);
+            }
+            
+            if (!date.isEmpty()) {
+                String query = "UPDATE appointment SET date1='" + date + "' WHERE name1='" + name + "'";
+                x += sta.executeUpdate(query);
+                tableModel.setValueAt(date, selectedRow, 8);
+            }
+            
+            if (!time.isEmpty()) {
+                String query = "UPDATE appointment SET time1='" + time + "' WHERE name1='" + name + "'";
+                x += sta.executeUpdate(query);
+                tableModel.setValueAt(time, selectedRow, 9);
+            }
+            
+            if (!reason.isEmpty()) {
+                String query = "UPDATE appointment SET reason='" + reason + "' WHERE name1='" + name + "'";
+                x += sta.executeUpdate(query);
+                tableModel.setValueAt(reason, selectedRow, 10);
+            }
+
+            if (x > 0) {
+                JOptionPane.showMessageDialog(this, "Appointment updated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "No changes made to the appointment", "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
