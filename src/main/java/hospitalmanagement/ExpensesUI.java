@@ -286,8 +286,4 @@ public class ExpensesUI{
             exception.printStackTrace();
         }
     }
-    
-        public static void main(String[] args) {
-        new ExpensesUI(); 
-    }
 }
