@@ -3,6 +3,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -40,7 +44,7 @@ public class ExpensesUI{
         l4.setFont(new Font("Arial",Font.BOLD,25));
         l4.setForeground(Color.BLACK);
         
-        l5 = new JLabel("Date:");
+        l5 = new JLabel("Expenses ID:");
         l5.setBounds(750, 180, 200, 35);
         l5.setFont(new Font("Arial",Font.PLAIN,15));
         l5.setForeground(Color.BLACK);
@@ -64,10 +68,35 @@ public class ExpensesUI{
         l3.setBounds(110, 20, 1000, 100);
                 
         // Table settings 
-        String[] columnNames = {"Date", "Description", "Amount", "Encoder"};
+        String[] columnNames = {"Expenses ID", "Description", "Amount", "Encoder"};
         tblm = new DefaultTableModel(columnNames, 0);
         tbl = new JTable(tblm);
         tbl.setBounds(585, 170, 550, 390);
+        
+        try {
+                    try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/oophospital", "root", "Kurtjerome11")) {
+                        String query = "select * from expenses" ;
+                        
+                        Statement sta = connection.createStatement();
+                        ResultSet rs = sta.executeQuery(query);
+                        
+                        while(rs.next()){
+                            
+                            String Date = rs.getString("date1");
+                            String Description = rs.getString("des");
+                            String Amount = rs.getString("amount");
+                            String EncoderName = rs.getString("enc");
+                            
+                            
+                            String tbData[] = {Date,Description,Amount,EncoderName};
+                            tblm.addRow(tbData);
+                            
+                        }
+                    }
+
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
        
         JScrollPane scrollPane = new JScrollPane(tbl);
         f1.add(scrollPane); 
@@ -143,6 +172,31 @@ public class ExpensesUI{
             public void actionPerformed(ActionEvent e) 
             {
                 addexpense();
+                
+                String Date = tfdate.getText();
+                String Description = tfdcptn.getText();
+                String Amount = tfamnt.getText();
+                String EncoderName = tfen.getText();
+                
+                
+                try {
+                    try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/oophospital", "root", "Kurtjerome11")) {
+                        String query = "INSERT INTO expenses (date1, des, amount ,enc) Values('" + Date + "','" + Description + "','" + Amount + "','" +
+                                EncoderName + "')";
+                        
+                        Statement sta = connection.createStatement();
+                        int x = sta.executeUpdate(query);
+                    }
+
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+                
+                // Clear input fields after adding
+                tfdate.setText("");
+                tfdcptn.setText("");
+                tfamnt.setText("");
+                tfen.setText("");
             }
         });
         
@@ -192,6 +246,7 @@ public class ExpensesUI{
         String Description = tfdcptn.getText();
         String Amount = tfamnt.getText();
         String EncoderName = tfen.getText();
+        
         if (Date.isEmpty() || Description.isEmpty() || Amount.isEmpty() || EncoderName.isEmpty()) 
         {
             JOptionPane.showMessageDialog(f1, "Please Fill In The Necessary Information!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -200,20 +255,39 @@ public class ExpensesUI{
 
         tblm.addRow(new Object[]{Date, Description, Amount, EncoderName});
 
-        // Clear input fields after adding
-        tfdate.setText("");
-        tfdcptn.setText("");
-        tfamnt.setText("");
-        tfen.setText("");
+        
     }
     
     private void deleteexpense() 
     {
         int selectedRow = tbl.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(f1, "Select A Record To Delete!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(f1, "Please select an expenses to delete", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        tblm.removeRow(selectedRow);
+
+        String name = (String) tbl.getValueAt(selectedRow, 0);
+
+        try {
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/oophospital", "root", "Kurtjerome11")) {
+                String query = "DELETE FROM expenses WHERE date1='" + name + "'";
+                Statement sta = connection.createStatement();
+                int x = sta.executeUpdate(query);
+
+                if (x == 1) {
+                    tblm.removeRow(selectedRow);
+                    JOptionPane.showMessageDialog(f1, "Expenses deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(f1, "Error deleting Expenses", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+    
+        public static void main(String[] args) {
+        new ExpensesUI(); 
     }
 }
