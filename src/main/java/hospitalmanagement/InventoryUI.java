@@ -253,7 +253,7 @@ bsear = new JButton("Search");
         
         //button that goes back to the dashboard
         b1 = new JButton("Back");
-        b1.setBounds(1000, 550, 130, 60);
+        b1.setBounds(1060, 600, 80, 30);
         b1.setFont(new Font("Arial",Font.PLAIN,12));
         b1.setForeground(Color.black);
                 f1.add(b1);
