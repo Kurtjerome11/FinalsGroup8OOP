@@ -3,6 +3,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -10,7 +14,7 @@ public class ManageUI{
     private JFrame f1 = new JFrame("Group8 OOP");
     private JLabel l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, limg;
     private JPanel p1;
-    private JButton b1,b2,b3;
+    private JButton b1,b2,b3,b4;
     private JTextField tID, tName, tAge, tGender, tDate;
     private JTextArea tMed, tPres;
     private JTable lpatient;
@@ -86,6 +90,35 @@ public class ManageUI{
         ltpatient = new DefaultTableModel(columnNames, 0);
         lpatient = new JTable(ltpatient);
         lpatient.setBounds(585, 170, 550, 390);
+        
+         try {
+                    try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/oophospital", "root", "Kurtjerome11")) {
+                        String query = "select * from patientinf" ;
+                        
+                        Statement sta = connection.createStatement();
+                        ResultSet rs = sta.executeQuery(query);
+                        
+                        while(rs.next()){
+                            
+                            String id = rs.getString("patientID");
+                            String name = rs.getString("name1");
+                            String age = rs.getString("age");
+                            String gender = rs.getString("gender");
+                            String date = rs.getString("date1");
+                            String medHistory = rs.getString("med");
+                            String prescriptions = rs.getString("pres");
+                            
+                            
+                            String tbData[] = {id,name,age,gender,date,medHistory,prescriptions};
+                            ltpatient.addRow(tbData);
+                            
+                        }
+                    }
+
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+        
 
         // This to customize the column size
         TableColumn id = lpatient.getColumnModel().getColumn(0);
@@ -157,7 +190,32 @@ public class ManageUI{
         b2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 addPatient();
+
+               String id = tID.getText();
+               String name = tName.getText();
+               String age = tAge.getText();
+               String gender = tGender.getText();
+               String date = tDate.getText();
+               String medHistory = tMed.getText();
+               String prescriptions = tPres.getText();
+                
+                
+                try {
+                    try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/oophospital", "root", "Kurtjerome11")) {
+                        String query = "INSERT INTO patientinf (patientID, name1, age ,gender,date1,med,pres) Values('" + id + "','" + name + "','" + age + "','" +
+                                gender + "','" + date + "','" + medHistory + "','"+prescriptions+"')";
+                        
+                        Statement sta = connection.createStatement();
+                        int x = sta.executeUpdate(query);
+                    }
+
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+                
+                clearFields();
             }
+            
         });
 
         b3 = new JButton("Delete Patient");
@@ -168,6 +226,18 @@ public class ManageUI{
         b3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 deletePatient();
+            }
+        });
+        
+        // Button to update specific column
+        b4 = new JButton("Update Patient");
+        b4.setBounds(760, 600, 150, 35);
+        b4.setForeground(Color.BLACK);
+        b4.setFont(new Font("Bookman Old Style", Font.PLAIN, 15));
+        b4.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        b4.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updatePatient();
             }
         });
 
@@ -186,6 +256,7 @@ public class ManageUI{
         f1.add(b1);
         f1.add(b2);
         f1.add(b3);
+        f1.add(b4);
         f1.add(sp1);
         f1.add(tMed);
         f1.add(tPres);
@@ -220,14 +291,75 @@ public class ManageUI{
 
         ltpatient.addRow(new Object[]{id, name, age, gender, date, medHistory, prescriptions});
 
-        // Clear input fields after adding
-        tID.setText("");
-        tName.setText("");
-        tAge.setText("");
-        tGender.setText("");
-        tDate.setText("");
-        tMed.setText("");
-        tPres.setText("");
+        
+    }
+    
+    private void updatePatient() {
+        int selectedRow = lpatient.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(f1, "Please select patient to update", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String id = tID.getText();
+        String name = tName.getText();
+        String age = tAge.getText();
+        String gender = tGender.getText();
+        String date = tDate.getText();
+        String medHistory = tMed.getText();
+        String prescriptions = tPres.getText();
+
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/oophospital", "root", "Kurtjerome11");
+            Statement sta = connection.createStatement();
+            int x = 0;
+
+            if (!name.isEmpty()) {
+                String query = "UPDATE patientinf SET name1='" + name + "' WHERE patientID='" + id + "'";
+                x += sta.executeUpdate(query);
+                lpatient.setValueAt(name, selectedRow, 1);
+            }
+
+            if (!gender.isEmpty()) {
+                String query = "UPDATE patientinf SET age='" + gender + "' WHERE patientID='" + id + "'";
+                x += sta.executeUpdate(query);
+                lpatient.setValueAt(gender, selectedRow, 2);
+            }
+
+            if (!date.isEmpty()) {
+                String query = "UPDATE patientinf SET gender='" + date + "' WHERE patientID='" + id + "'";
+                x += sta.executeUpdate(query);
+                lpatient.setValueAt(date, selectedRow, 3);
+            }
+
+            if (!age.isEmpty()) {
+                String query = "UPDATE patientinf SET date1='" + age + "' WHERE patientID='" + id + "'";
+                x += sta.executeUpdate(query);
+                lpatient.setValueAt(age, selectedRow, 4);
+            }
+
+            if (!medHistory.isEmpty()) {
+                String query = "UPDATE patientinf SET med='" + medHistory + "' WHERE patientID='" + id + "'";
+                x += sta.executeUpdate(query);
+                lpatient.setValueAt(medHistory, selectedRow, 5);
+            }
+            
+            if (!prescriptions.isEmpty()) {
+                String query = "UPDATE patientinf SET pres='" + prescriptions + "' WHERE patientID='" + id + "'";
+                x += sta.executeUpdate(query);
+                lpatient.setValueAt(prescriptions, selectedRow, 6);
+            }
+            
+            if (x > 0) {
+                JOptionPane.showMessageDialog(f1, "Patient updated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(f1, "No changes made to the patient", "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     private void deletePatient() {
@@ -237,8 +369,36 @@ public class ManageUI{
             return;
         }
 
-        ltpatient.removeRow(selectedRow);
+        String name = (String) lpatient.getValueAt(selectedRow, 0);
+
+        try {
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/oophospital", "root", "Kurtjerome11")) {
+                String query = "DELETE FROM patientinf WHERE patientID='" + name + "'";
+                Statement sta = connection.createStatement();
+                int x = sta.executeUpdate(query);
+
+                if (x == 1) {
+                    ltpatient.removeRow(selectedRow);
+                    JOptionPane.showMessageDialog(f1, "Patient deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(f1, "Error deleting Patient", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
+    
+    private void clearFields() {
+        tID.setText("");
+        tName.setText("");
+        tAge.setText("");
+        tGender.setText("");
+        tDate.setText("");
+        tMed.setText("");
+        tPres.setText("");
+    } 
 
     
 }
