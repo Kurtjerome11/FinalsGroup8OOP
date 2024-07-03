@@ -17,9 +17,9 @@ public class MainUi{
         f1.getContentPane().setBackground(Color.BLACK);
         
         // Label settings
-        l1 = new JLabel("What do you want to do?");
-        l1.setBounds(40, 0, 1000, 100);
-        l1.setFont(new Font("Cambria",Font.PLAIN,35));
+        l1 = new JLabel("| WELCOME TO OUR SYSTEM! |");
+        l1.setBounds(345, 0, 1000, 100);
+        l1.setFont(new Font("Cambria",Font.BOLD,35));
         l1.setForeground(Color.BLACK);
         
         l4 = new JLabel("______________________________________________________________________________");
@@ -162,5 +162,6 @@ public class MainUi{
         f1.setLayout(null);
         f1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+    
 }
 
