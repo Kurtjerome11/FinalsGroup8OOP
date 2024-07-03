@@ -18,7 +18,7 @@ public class OthersUI{
         
         // Label settings
         l1 = new JLabel("Hospital Hierarchy");
-        l1.setBounds(360, 0, 1000, 100);
+        l1.setBounds(345, 0, 1000, 100);
         l1.setFont(new Font("Cambria",Font.BOLD,60));
         l1.setForeground(Color.WHITE);
         
@@ -203,7 +203,7 @@ public class OthersUI{
         
         //button that goes back to the dashboard
         b1 = new JButton("Back");
-        b1.setBounds(1020, 590, 130, 50);
+        b1.setBounds(1060, 600, 80, 30);
         b1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 f1.dispose();
@@ -248,6 +248,10 @@ public class OthersUI{
         f1.setLocationRelativeTo(null);
         f1.setLayout(null);
         f1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+    
+        public static void main(String[] args) {
+        new OthersUI(); 
     }
 }
 
