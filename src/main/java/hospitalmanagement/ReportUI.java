@@ -3,6 +3,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -120,6 +124,38 @@ public class ReportUI{
         treport = new JTable(tlreport);
         treport.setBounds(67, 360, 1110, 200);
         
+        try {
+                    try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/oophospital", "root", "Kurtjerome11")) {
+                        String query = "select * from rep" ;
+                        
+                        Statement sta = connection.createStatement();
+                        ResultSet rs = sta.executeQuery(query);
+                        
+                        while(rs.next()){
+                            
+                            String id = rs.getString("patID");
+                            String room = rs.getString("room");
+                            String outcome = rs.getString("clic");
+                            String diagnosis = rs.getString("diag");
+                            String admitDate = rs.getString("ad");
+                            String dischargeDate = rs.getString("dis");
+                            String doctor = rs.getString("doc");
+                            String procedure = rs.getString("pro");
+                            String ItemCharges = rs.getString("item1");
+                            String TotalCharges = rs.getString("tot");
+
+                            
+                            
+                            String tbData[] = {id,room,outcome,diagnosis,admitDate,dischargeDate,doctor,procedure,ItemCharges,TotalCharges};
+                            tlreport.addRow(tbData);
+                            
+                        }
+                    }
+
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+        
         
         //Customizes column size
         TableColumn id = treport.getColumnModel().getColumn(0);
@@ -193,7 +229,7 @@ public class ReportUI{
         
         //button that goes back to the dashboard
         b1 = new JButton("Back");
-        b1.setBounds(1060, 620, 80, 30);
+        b1.setBounds(1100, 600, 80, 30);
         b1.setForeground(Color.black);
         b1.setFocusable(false);
         b1.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
@@ -213,6 +249,42 @@ public class ReportUI{
         b2.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 addReport();
+                
+                String id = tID.getText();
+                String room = tRBnumber.getText();
+                String outcome = tCLIOutcome.getText();
+                String diagnosis = tDiagnose.getText();
+                String admitDate = tAdmitDate.getText();
+                String dischargeDate = tDischargeDate.getText();
+                String doctor = tDocName.getText();
+                String procedure = tProcedure.getText();
+                String ItemCharges = tItem.getText();
+                String TotalCharges = tTotal.getText();
+                
+                
+                try {
+                    try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/oophospital", "root", "Kurtjerome11")) {
+                        String query = "INSERT INTO rep (patID, room, clic ,diag,ad,dis,doc,pro,item1,tot) Values('" + id + "','" + room + "','" + outcome + "','" +
+                                diagnosis + "','" + admitDate + "','" + dischargeDate + "','"+doctor+"','"+procedure+"','"+ItemCharges+"','"+TotalCharges+"')";
+                        
+                        Statement sta = connection.createStatement();
+                        int x = sta.executeUpdate(query);
+                    }
+
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+                
+                tID.setText("");
+                tRBnumber.setText("");
+                tAdmitDate.setText("");
+                tDischargeDate.setText("");
+                tDocName.setText("");
+                tCLIOutcome.setText("");
+                tDiagnose.setText("");
+                tProcedure.setText("");
+                tTotal.setText("");
+                tItem.setText("");
             }
         });
                 
@@ -297,28 +369,34 @@ public class ReportUI{
             return;
             }
                 tlreport.addRow(new Object[]{ id, room, outcome, diagnosis, admitDate, dischargeDate, doctor, procedure, ItemCharges, TotalCharges});
-                
-                //Clears input fields before adding data
-                tID.setText("");
-                tRBnumber.setText("");
-                tAdmitDate.setText("");
-                tDischargeDate.setText("");
-                tDocName.setText("");
-                tCLIOutcome.setText("");
-                tDiagnose.setText("");
-                tProcedure.setText("");
-                tTotal.setText("");
-                tItem.setText("");
         }
         
         private void deleteReport(){
             int selectedRow = treport.getSelectedRow();
-            if (selectedRow == -1){
-                JOptionPane.showMessageDialog(f1, "Please select a report you want to delete.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(f1, "Please select a report to delete", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String name = (String) treport.getValueAt(selectedRow, 0);
+
+        try {
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/oophospital", "root", "Kurtjerome11")) {
+                String query = "DELETE FROM rep WHERE patID='" + name + "'";
+                Statement sta = connection.createStatement();
+                int x = sta.executeUpdate(query);
+
+                if (x == 1) {
+                    tlreport.removeRow(selectedRow);
+                    JOptionPane.showMessageDialog(f1, "Report deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(f1, "Error deleting Report", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
-            
-            tlreport.removeRow(selectedRow);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         }
         
         private void updateReport(){
@@ -341,7 +419,17 @@ public class ReportUI{
                 if (newValue != null){
                     tlreport.setValueAt(newValue, selectedRow, i);
                 }
+                
+                
             }
+            
+            
         }
+        
+        
+            public static void main(String[] args) {
+        new ReportUI(); 
+    }
+    
 }
 
