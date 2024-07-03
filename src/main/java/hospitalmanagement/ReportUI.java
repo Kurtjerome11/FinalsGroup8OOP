@@ -425,11 +425,7 @@ public class ReportUI{
             
             
         }
-        
-        
-            public static void main(String[] args) {
-        new ReportUI(); 
-    }
+
     
 }
 
