@@ -189,7 +189,7 @@ public class AppointmentUI extends JFrame {
 
      
         tableModel = new DefaultTableModel(
-                new String[]{"Patient ID", "Name", "Gender", "Date of Birth", "Age", "Contact No", "Address", "Email", "Date", "Time", "Reason"}, 0);
+                new String[]{"Patient ID", "Last Name", "Gender", "Date of Birth", "Age", "Contact No", "Address", "Email", "Date", "Time", "Reason"}, 0);
         table = new JTable(tableModel); 
         table.setGridColor(Color.GRAY); 
         JScrollPane tableScrollPane = new JScrollPane(table);
