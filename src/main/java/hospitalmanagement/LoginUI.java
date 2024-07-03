@@ -2,6 +2,10 @@ package hospitalmanagement;
 import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class LoginUI{
     private JFrame f1 = new JFrame("Group8 OOP");
@@ -67,14 +71,26 @@ public class LoginUI{
         j1.setBounds(185, 550, 100, 30);
         j1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String name = tName.getText();
+                String userName = tName.getText();
                 String password = tPass.getText();
-                if (name.equals("admin")||name.equals("doctor")||name.equals("nurse") 
-                    && password.equals("admin")||password.equals("doctor")||password.equals("nurse")) {
-                    f1.dispose();
-                    new MainUi();
-                } else {
-                    JOptionPane.showMessageDialog(f1, "Invalid Name or Password", "Error", JOptionPane.ERROR_MESSAGE);
+                try {
+                    Connection connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3307/oophospital",
+                        "root", "Kurtjerome11");
+
+                    PreparedStatement st = (PreparedStatement) connection
+                        .prepareStatement("Select name, password from login where name=? and password=?");
+
+                    st.setString(1, userName);
+                    st.setString(2, password);
+                    ResultSet rs = st.executeQuery();
+                    if (rs.next()) {
+                        f1.dispose();
+                        new Loading();
+                    } else {
+                        JOptionPane.showMessageDialog(f1, "Wrong Username & Password");
+                    }
+                } catch (Exception exception) {
+                    exception.printStackTrace();
                 }
             }
         });
